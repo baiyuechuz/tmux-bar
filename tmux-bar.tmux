@@ -18,7 +18,7 @@ tmux_set() {
 rarrow=$(tmux_get '@tmux_power_right_arrow_icon' '▌')
 larrow=$(tmux_get '@tmux_power_left_arrow_icon' '▐')
 session_icon="$(tmux_get '@tmux_power_session_icon' '')"
-user_icon="$(tmux_get '@tmux_power_user_icon' '󰀘')"
+user_icon="$(tmux_get '@tmux_power_user_icon' '󰀘 ')"
 time_icon="$(tmux_get '@tmux_power_time_icon' '')"
 date_icon="$(tmux_get '@tmux_power_date_icon' '')"
 show_user="$(tmux_get @tmux_power_show_user true)"
@@ -53,18 +53,17 @@ tmux_set @prefix_highlight_copy_mode_attr "fg=$TC,bg=$G0,bold"
 tmux_set @prefix_highlight_output_prefix "#[fg=$TC]#[bg=$G0]$larrow#[bg=$TC]#[fg=$G0]"
 tmux_set @prefix_highlight_output_suffix "#[fg=$TC]#[bg=$G0]$rarrow"
 
-#     
 # Left side of status bar
 tmux_set status-left-bg "$BLOCK_BG"
 tmux_set status-left-length 150
 
 # user@host
 if "$show_user" && "$show_host"; then
-  LS="#[fg=$RED,bg=$BLOCK_BG] $user_icon $(whoami)@#h #[fg=$BG,bg=$BG,nobold]$rarrow"
+  LS="#[fg=$PURPLE,bg=$BLOCK_BG] $user_icon $(whoami)@#h #[fg=$BG,bg=$BG,nobold]$rarrow"
 elif "$show_user"; then
-  LS="#[fg=$RED,bg=$BLOCK_BG] $user_icon $(whoami) #[fg=$BG,bg=$BG,nobold]$rarrow"
+  LS="#[fg=$PURPLE,bg=$BLOCK_BG] $user_icon $(whoami) #[fg=$BG,bg=$BG,nobold]$rarrow"
 elif "$show_host"; then
-  LS="#[fg=$RED,bg=$BLOCK_BG] #h #[fg=$BG,bg=$BG,nobold]$rarrow"
+  LS="#[fg=$PURPLE,bg=$BLOCK_BG] #h #[fg=$BG,bg=$BG,nobold]$rarrow"
 fi
 
 # session
@@ -78,18 +77,18 @@ tmux_set status-left "$LS"
 tmux_set status-right-bg "$BLOCK_BG"
 tmux_set status-right-length 150
 
-RS="#[fg=$BG]$larrow#[fg=$GRAY,bg=$BG] $time_icon $time_format #[fg=$BG,bg=$BG]$larrow#[fg=$PURPLE,bg=$BLOCK_BG] $date_icon $date_format "
+RS="#[fg=$BG]$larrow#[fg=$GRAY,bg=$BG] $time_icon $time_format #[fg=$BG,bg=$BG]$larrow#[fg=$RED,bg=$BLOCK_BG] $date_icon $date_format "
 
 tmux_set status-right "$RS"
 
 # Window status format
-tmux_set window-status-format "#[fg=$GRAY] #I:#W#F"
-tmux_set window-status-current-format "#[fg=$BLUE] #I:#W#F"
+tmux_set window-status-format "#[fg=$GRAY]   #W"
+tmux_set window-status-current-format "#[fg=$BLUE]   #W"
 
 # Window status style
-tmux_set window-status-style "fg=$FG,bg=$BG,none"
-tmux_set window-status-last-style "fg=$FG,bg=$BG,bold"
-tmux_set window-status-activity-style "fg=$RED,bg=$BG,bold"
+tmux_set window-status-style "fg=$GRAY,bg=$BG,none"
+tmux_set window-status-last-style "fg=$GRAY,bg=$BG,bold"
+tmux_set window-status-activity-style "fg=$GRAY,bg=$BG,bold"
 
 # Window separator
 tmux_set window-status-separator ""
