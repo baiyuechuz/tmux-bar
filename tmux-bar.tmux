@@ -15,48 +15,36 @@ tmux_set() {
   tmux set-option -gq "$1" "$2"
 }
 
-# Parse colors from nvchad base46 cache using perl
-parse_nvchad_colors() {
-  local colors_file="$HOME/.local/share/nvim/base46/colors"
-  if [[ -f "$colors_file" ]]; then
-    perl -ne 'while (/([a-z_]+)\x0c(#[0-9A-Fa-f]{6})/gi) { print "$1=$2\n" }' "$colors_file"
-  fi
-}
-
-# Parse statusline bg/fg from nvchad statusline cache (computed colors)
-# Format: fg\x0c<color>\x07bg\x0c<color>\x0fStatusLine
-parse_statusline_bg() {
-  local stl_file="$HOME/.local/share/nvim/base46/statusline"
-  if [[ -f "$stl_file" ]]; then
-    perl -0777 -ne 'if (/fg\x0c#[0-9A-Fa-f]{6}\x07bg\x0c(#[0-9A-Fa-f]{6})\x0fStatusLine/s) { print "$1" }' "$stl_file"
-  fi
-}
-
-parse_statusline_fg() {
-  local stl_file="$HOME/.local/share/nvim/base46/statusline"
-  if [[ -f "$stl_file" ]]; then
-    perl -0777 -ne 'if (/fg\x0c(#[0-9A-Fa-f]{6})\x07bg\x0c#[0-9A-Fa-f]{6}\x0fStatusLine/s) { print "$1" }' "$stl_file"
-  fi
-}
-
-# Load colors from nvchad or use tundra defaults
+# Load colors from nvchad (single perl call for speed)
 load_colors() {
-  local nvchad_colors="$HOME/.local/share/nvim/base46/colors"
+  local colors_file="$HOME/.local/share/nvim/base46/colors"
+  local stl_file="$HOME/.local/share/nvim/base46/statusline"
   
-  if [[ -f "$nvchad_colors" ]]; then
-    local colors
-    colors=$(parse_nvchad_colors)
-    
-    RED=$(echo "$colors" | grep "^red=" | cut -d= -f2)
-    GREEN=$(echo "$colors" | grep "^green=" | cut -d= -f2)
-    BLUE=$(echo "$colors" | grep "^blue=" | cut -d= -f2)
-    PURPLE=$(echo "$colors" | grep "^purple=" | cut -d= -f2)
-    BLOCK_BG=$(echo "$colors" | grep "^one_bg3=" | cut -d= -f2)
-    FG=$(echo "$colors" | grep "^white=" | cut -d= -f2)
-    
-    # Use computed statusline colors (same as nvchad statusline)
-    BG=$(parse_statusline_bg)
-    GRAY=$(parse_statusline_fg)
+  if [[ -f "$colors_file" && -f "$stl_file" ]]; then
+    eval "$(perl -e '
+      my %want = map { $_ => 1 } qw(red green blue purple one_bg3 white);
+      open my $cf, "<", $ARGV[0] or die;
+      binmode $cf;
+      my $colors = do { local $/; <$cf> };
+      close $cf;
+      while ($colors =~ /([a-z_]+)\x0c(#[0-9A-Fa-f]{6})/gi) {
+        my ($k, $v) = ($1, $2);
+        print "RED=$v\n" if $k eq "red";
+        print "GREEN=$v\n" if $k eq "green";
+        print "BLUE=$v\n" if $k eq "blue";
+        print "PURPLE=$v\n" if $k eq "purple";
+        print "BLOCK_BG=$v\n" if $k eq "one_bg3";
+        print "FG=$v\n" if $k eq "white";
+      }
+      open my $sf, "<", $ARGV[1] or die;
+      binmode $sf;
+      my $stl = do { local $/; <$sf> };
+      close $sf;
+      if ($stl =~ /fg\x0c(#[0-9A-Fa-f]{6})\x07bg\x0c(#[0-9A-Fa-f]{6})\x0fStatusLine/s) {
+        print "GRAY=$1\n";
+        print "BG=$2\n";
+      }
+    ' "$colors_file" "$stl_file")"
   fi
 
   # Tundra defaults (fallback)
