@@ -75,8 +75,8 @@ cwd_icon="$(tmux_get '@tmux_bar_cwd_icon' '')"
 show_user="$(tmux_get @tmux_bar_show_user true)"
 show_host="$(tmux_get @tmux_bar_show_host true)"
 show_session="$(tmux_get @tmux_bar_show_session true)"
-show_git="$(tmux_get @tmux_bar_show_git false)"
-show_cwd="$(tmux_get @tmux_bar_show_cwd true)"
+show_git="$(tmux_get @tmux_bar_show_git true)"
+show_cwd="$(tmux_get @tmux_bar_show_cwd false)"
 time_format=$(tmux_get @tmux_bar_time_format '%T')
 date_format=$(tmux_get @tmux_bar_date_format '%F')
 refresh_interval=$(tmux_get @tmux_bar_refresh_interval 1)
@@ -121,7 +121,7 @@ RS=""
 
 # Current directory
 if "$show_cwd"; then
-  RS="$RS#[fg=$BLUE,bg=$BG] $cwd_icon #{b:pane_current_path} "
+  RS="$RS#[fg=$BLUE,bg=$BG] $cwd_icon #{b:pane_current_path}"
 fi
 
 # Time and date
