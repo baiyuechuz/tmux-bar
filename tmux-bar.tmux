@@ -15,12 +15,11 @@ tmux_set() {
   tmux set-option -gq "$1" "$2"
 }
 
-# Parse color from nvchad base46 cache
-parse_nvchad_color() {
-  local color_name="$1"
+# Parse colors from nvchad base46 cache using perl
+parse_nvchad_colors() {
   local colors_file="$HOME/.local/share/nvim/base46/colors"
   if [[ -f "$colors_file" ]]; then
-    grep -oP "${color_name}#[0-9A-Fa-f]{6}" "$colors_file" | head -1 | grep -oP '#[0-9A-Fa-f]{6}'
+    perl -ne 'while (/([a-z_]+)\x0c(#[0-9A-Fa-f]{6})/gi) { print "$1=$2\n" }' "$colors_file"
   fi
 }
 
@@ -29,14 +28,17 @@ load_colors() {
   local nvchad_colors="$HOME/.local/share/nvim/base46/colors"
   
   if [[ -f "$nvchad_colors" ]]; then
-    RED=$(parse_nvchad_color "red")
-    GREEN=$(parse_nvchad_color "green")
-    BLUE=$(parse_nvchad_color "blue")
-    PURPLE=$(parse_nvchad_color "purple")
-    GRAY=$(parse_nvchad_color "grey")
-    BG=$(parse_nvchad_color "black")
-    BLOCK_BG=$(parse_nvchad_color "one_bg3")
-    FG=$(parse_nvchad_color "white")
+    local colors
+    colors=$(parse_nvchad_colors)
+    
+    RED=$(echo "$colors" | grep "^red=" | cut -d= -f2)
+    GREEN=$(echo "$colors" | grep "^green=" | cut -d= -f2)
+    BLUE=$(echo "$colors" | grep "^blue=" | cut -d= -f2)
+    PURPLE=$(echo "$colors" | grep "^purple=" | cut -d= -f2)
+    GRAY=$(echo "$colors" | grep "^grey=" | cut -d= -f2)
+    BG=$(echo "$colors" | grep "^black=" | cut -d= -f2)
+    BLOCK_BG=$(echo "$colors" | grep "^one_bg3=" | cut -d= -f2)
+    FG=$(echo "$colors" | grep "^white=" | cut -d= -f2)
   fi
 
   # Tundra defaults (fallback)
