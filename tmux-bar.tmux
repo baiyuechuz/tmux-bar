@@ -81,18 +81,13 @@ user_icon="$(tmux_get '@tmux_bar_user_icon' '󰀘')"
 time_icon="$(tmux_get '@tmux_bar_time_icon' '󰔟')"
 date_icon="$(tmux_get '@tmux_bar_date_icon' '')"
 git_icon="$(tmux_get '@tmux_bar_git_icon' '')"
-zoom_icon="$(tmux_get '@tmux_bar_zoom_icon' ' ')"
-prefix_icon="$(tmux_get '@tmux_bar_prefix_icon' '󱙝')"
-battery_icon="$(tmux_get '@tmux_bar_battery_icon' '󰁹')"
-cpu_icon="$(tmux_get '@tmux_bar_cpu_icon' '')"
+prefix_icon="$(tmux_get '@tmux_bar_prefix_icon' ' 󱙝')"
 
 # Display options
 show_user="$(tmux_get @tmux_bar_show_user true)"
 show_host="$(tmux_get @tmux_bar_show_host true)"
 show_session="$(tmux_get @tmux_bar_show_session true)"
 show_git="$(tmux_get @tmux_bar_show_git false)"
-show_battery="$(tmux_get @tmux_bar_show_battery false)"
-show_cpu="$(tmux_get @tmux_bar_show_cpu false)"
 time_format=$(tmux_get @tmux_bar_time_format '%T')
 date_format=$(tmux_get @tmux_bar_date_format '%F')
 refresh_interval=$(tmux_get @tmux_bar_refresh_interval 1)
@@ -104,12 +99,6 @@ tmux_set status on
 # Basic status bar colors (using status-style instead of deprecated status-attr)
 tmux_set status-style "fg=$FG,bg=$BG"
 
-# tmux-prefix-highlight
-tmux_set @prefix_highlight_show_copy_mode 'on'
-tmux_set @prefix_highlight_copy_mode_attr "fg=$FG,bg=$BLOCK_BG,bold"
-tmux_set @prefix_highlight_output_prefix "#[fg=$FG]#[bg=$BLOCK_BG]$larrow#[bg=$FG]#[fg=$BLOCK_BG]"
-tmux_set @prefix_highlight_output_suffix "#[fg=$FG]#[bg=$BLOCK_BG]$rarrow"
-
 # Left side of status bar
 tmux_set status-left-length 150
 
@@ -117,9 +106,6 @@ LS=""
 
 # Prefix indicator
 LS="#{?client_prefix,#[fg=$RED#,bg=$BG]$prefix_icon ,}"
-
-# Zoom indicator
-LS="$LS#{?window_zoomed_flag,#[fg=$BLUE#,bg=$BG]$zoom_icon ,}"
 
 # user@host
 if "$show_user" && "$show_host"; then
@@ -146,16 +132,6 @@ tmux_set status-left "$LS"
 tmux_set status-right-length 150
 
 RS=""
-
-# CPU usage
-if "$show_cpu"; then
-  RS="$RS#[fg=$GREEN,bg=$BG] $cpu_icon #(top -bn1 | grep 'Cpu(s)' | awk '{print \$2}')% "
-fi
-
-# Battery
-if "$show_battery"; then
-  RS="$RS#[fg=$BLUE,bg=$BG] $battery_icon #(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo 'N/A')% "
-fi
 
 # Time and date
 RS="$RS#[fg=$BG]$larrow#[fg=$GRAY,bg=$BG] $time_icon $time_format #[fg=$BG,bg=$BG]$larrow#[fg=$RED,bg=$BLOCK_BG] $date_icon $date_format "
