@@ -1,4 +1,4 @@
-# tmux-bar
+# Tmux-bar
 
 A minimal tmux status bar with NvChad theme synchronization.
 
