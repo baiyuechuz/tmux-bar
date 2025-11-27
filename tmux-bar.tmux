@@ -54,7 +54,7 @@ load_colors() {
   BLUE="${BLUE:-#A5B4FC}"
   PURPLE="${PURPLE:-#BDB0E4}"
   GRAY="${GRAY:-#5f6675}"
-  BG="${BG:-#171e2d}"
+  BG="${BG:-#182030}"
   BLOCK_BG="${BLOCK_BG:-#323948}"
   FG="${FG:-#FFFFFF}"
 }
@@ -70,7 +70,7 @@ time_icon="$(tmux_get '@tmux_bar_time_icon' '󰔟')"
 date_icon="$(tmux_get '@tmux_bar_date_icon' '')"
 git_icon="$(tmux_get '@tmux_bar_git_icon' '')"
 cwd_icon="$(tmux_get '@tmux_bar_cwd_icon' '')"
-prefix_icon="$(tmux_get '@tmux_bar_prefix_icon' ' 󰊠')"
+prefix_icon="$(tmux_get '@tmux_bar_prefix_icon' '󰊠')"
 
 # Display options
 show_user="$(tmux_get @tmux_bar_show_user true)"
