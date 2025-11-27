@@ -24,17 +24,18 @@ parse_nvchad_colors() {
 }
 
 # Parse statusline bg/fg from nvchad statusline cache (computed colors)
+# Format: fg\x0c<color>\x07bg\x0c<color>\x0fStatusLine
 parse_statusline_bg() {
   local stl_file="$HOME/.local/share/nvim/base46/statusline"
   if [[ -f "$stl_file" ]]; then
-    perl -0777 -ne 'if (/StatusLine.*?bg\x0c(#[0-9A-Fa-f]{6})/s) { print "$1" }' "$stl_file"
+    perl -0777 -ne 'if (/fg\x0c#[0-9A-Fa-f]{6}\x07bg\x0c(#[0-9A-Fa-f]{6})\x0fStatusLine/s) { print "$1" }' "$stl_file"
   fi
 }
 
 parse_statusline_fg() {
   local stl_file="$HOME/.local/share/nvim/base46/statusline"
   if [[ -f "$stl_file" ]]; then
-    perl -0777 -ne 'if (/StatusLine.*?fg\x0c(#[0-9A-Fa-f]{6})/s) { print "$1" }' "$stl_file"
+    perl -0777 -ne 'if (/fg\x0c(#[0-9A-Fa-f]{6})\x07bg\x0c#[0-9A-Fa-f]{6}\x0fStatusLine/s) { print "$1" }' "$stl_file"
   fi
 }
 
