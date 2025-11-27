@@ -123,7 +123,7 @@ fi
 
 # Git branch
 if "$show_git"; then
-  LS="$LS#[fg=$PURPLE,bg=$BG] $git_icon #(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '-') "
+  LS="$LS#[fg=$PURPLE,bg=$BG] $git_icon #(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '-')"
 fi
 
 tmux_set status-left "$LS"
@@ -139,13 +139,13 @@ RS="$RS#[fg=$BG]$larrow#[fg=$GRAY,bg=$BG] $time_icon $time_format #[fg=$BG,bg=$B
 tmux_set status-right "$RS"
 
 # Window status with index
-tmux_set window-status-format "#[fg=$GRAY]  #I:#W"
-tmux_set window-status-current-format "#[fg=$BLUE,bold]  #I:#W"
+tmux_set window-status-format "#[fg=$GRAY] #I:#W"
+tmux_set window-status-current-format "#[fg=$BLUE,bold] #I:#W"
 tmux_set window-status-style "fg=$GRAY,bg=$BG"
 tmux_set window-status-last-style "fg=$GRAY,bg=$BG,bold"
 tmux_set window-status-activity-style "fg=$RED,bg=$BG,bold"
 tmux_set window-status-bell-style "fg=$RED,bg=$BG,bold"
-tmux_set window-status-separator ""
+tmux_set window-status-separator " "
 
 # Pane border
 tmux_set pane-border-style "fg=$GRAY,bg=default"
