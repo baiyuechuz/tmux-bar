@@ -2,6 +2,9 @@
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Store plugin directory for external tools (e.g., nvchad theme sync)
+tmux set-option -gq @tmux_bar_dir "$CURRENT_DIR"
+
 tmux_get() {
   local value
   value="$(tmux show -gqv "$1")"
