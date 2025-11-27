@@ -23,6 +23,21 @@ parse_nvchad_colors() {
   fi
 }
 
+# Parse statusline bg/fg from nvchad statusline cache (computed colors)
+parse_statusline_bg() {
+  local stl_file="$HOME/.local/share/nvim/base46/statusline"
+  if [[ -f "$stl_file" ]]; then
+    perl -0777 -ne 'if (/StatusLine.*?bg\x0c(#[0-9A-Fa-f]{6})/s) { print "$1" }' "$stl_file"
+  fi
+}
+
+parse_statusline_fg() {
+  local stl_file="$HOME/.local/share/nvim/base46/statusline"
+  if [[ -f "$stl_file" ]]; then
+    perl -0777 -ne 'if (/StatusLine.*?fg\x0c(#[0-9A-Fa-f]{6})/s) { print "$1" }' "$stl_file"
+  fi
+}
+
 # Load colors from nvchad or use tundra defaults
 load_colors() {
   local nvchad_colors="$HOME/.local/share/nvim/base46/colors"
@@ -35,10 +50,12 @@ load_colors() {
     GREEN=$(echo "$colors" | grep "^green=" | cut -d= -f2)
     BLUE=$(echo "$colors" | grep "^blue=" | cut -d= -f2)
     PURPLE=$(echo "$colors" | grep "^purple=" | cut -d= -f2)
-    GRAY=$(echo "$colors" | grep "^grey=" | cut -d= -f2)
-    BG=$(echo "$colors" | grep "^black=" | cut -d= -f2)
     BLOCK_BG=$(echo "$colors" | grep "^one_bg3=" | cut -d= -f2)
     FG=$(echo "$colors" | grep "^white=" | cut -d= -f2)
+    
+    # Use computed statusline colors (same as nvchad statusline)
+    BG=$(parse_statusline_bg)
+    GRAY=$(parse_statusline_fg)
   fi
 
   # Tundra defaults (fallback)
@@ -46,8 +63,8 @@ load_colors() {
   GREEN="${GREEN:-#B5E8B0}"
   BLUE="${BLUE:-#A5B4FC}"
   PURPLE="${PURPLE:-#BDB0E4}"
-  GRAY="${GRAY:-#3e4554}"
-  BG="${BG:-#111827}"
+  GRAY="${GRAY:-#5f6675}"
+  BG="${BG:-#171e2d}"
   BLOCK_BG="${BLOCK_BG:-#323948}"
   FG="${FG:-#FFFFFF}"
 }
