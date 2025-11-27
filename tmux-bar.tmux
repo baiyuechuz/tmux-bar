@@ -22,7 +22,6 @@ load_colors() {
   
   if [[ -f "$colors_file" && -f "$stl_file" ]]; then
     eval "$(perl -e '
-      my %want = map { $_ => 1 } qw(red green blue purple one_bg3 white);
       open my $cf, "<", $ARGV[0] or die;
       binmode $cf;
       my $colors = do { local $/; <$cf> };
@@ -33,7 +32,6 @@ load_colors() {
         print "GREEN=$v\n" if $k eq "green";
         print "BLUE=$v\n" if $k eq "blue";
         print "PURPLE=$v\n" if $k eq "purple";
-        print "BLOCK_BG=$v\n" if $k eq "one_bg3";
         print "FG=$v\n" if $k eq "white";
       }
       open my $sf, "<", $ARGV[1] or die;
@@ -43,6 +41,9 @@ load_colors() {
       if ($stl =~ /fg\x0c(#[0-9A-Fa-f]{6})\x07bg\x0c(#[0-9A-Fa-f]{6})\x0fStatusLine/s) {
         print "GRAY=$1\n";
         print "BG=$2\n";
+      }
+      if ($stl =~ /fg\x0c#[0-9A-Fa-f]{6}\x07bg\x0c(#[0-9A-Fa-f]{6})\x0bSt_cwd/s) {
+        print "BLOCK_BG=$1\n";
       }
     ' "$colors_file" "$stl_file")"
   fi
