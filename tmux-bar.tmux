@@ -81,7 +81,6 @@ user_icon="$(tmux_get '@tmux_bar_user_icon' '󰀘')"
 time_icon="$(tmux_get '@tmux_bar_time_icon' '󰔟')"
 date_icon="$(tmux_get '@tmux_bar_date_icon' '')"
 git_icon="$(tmux_get '@tmux_bar_git_icon' '')"
-prefix_icon="$(tmux_get '@tmux_bar_prefix_icon' '󰌌')"
 
 # Display options
 show_user="$(tmux_get @tmux_bar_show_user true)"
@@ -103,9 +102,6 @@ tmux_set status-style "fg=$FG,bg=$BG"
 tmux_set status-left-length 150
 
 LS=""
-
-# Prefix indicator
-LS="#[fg=$RED,bg=$BG]#{?client_prefix,$prefix_icon ,}"
 
 # user@host
 if "$show_user" && "$show_host"; then
