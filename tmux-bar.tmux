@@ -64,12 +64,12 @@ load_colors
 # Icons
 rarrow=$(tmux_get '@tmux_bar_right_arrow_icon' '▌')
 larrow=$(tmux_get '@tmux_bar_left_arrow_icon' '▐')
-session_icon="$(tmux_get '@tmux_bar_session_icon' '')"
+session_icon="$(tmux_get '@tmux_bar_session_icon' '')"
 user_icon="$(tmux_get '@tmux_bar_user_icon' '󰀘')"
 time_icon="$(tmux_get '@tmux_bar_time_icon' '󰔟')"
-date_icon="$(tmux_get '@tmux_bar_date_icon' '')"
-git_icon="$(tmux_get '@tmux_bar_git_icon' '')"
-cwd_icon="$(tmux_get '@tmux_bar_cwd_icon' '')"
+date_icon="$(tmux_get '@tmux_bar_date_icon' '')"
+git_icon="$(tmux_get '@tmux_bar_git_icon' '')"
+cwd_icon="$(tmux_get '@tmux_bar_cwd_icon' '')"
 
 # Display options
 show_user="$(tmux_get @tmux_bar_show_user true)"
@@ -130,8 +130,8 @@ RS="$RS#[fg=$BG]$larrow#[fg=$GRAY,bg=$BG] $time_icon $time_format #[fg=$BG,bg=$B
 tmux_set status-right "$RS"
 
 # Window status
-tmux_set window-status-format "#[fg=$GRAY] #W"
-tmux_set window-status-current-format "#[fg=$BLUE,bold] #W"
+tmux_set window-status-format "#[fg=$GRAY] #W"
+tmux_set window-status-current-format "#[fg=$BLUE,bold] #W"
 tmux_set window-status-style "fg=$GRAY,bg=$BG"
 tmux_set window-status-last-style "fg=$GRAY,bg=$BG,bold"
 tmux_set window-status-activity-style "fg=$RED,bg=$BG,bold"
