@@ -3,14 +3,14 @@
 # Pomodoro timer for tmux-bar
 # State stored in tmux environment variables
 
-WORK_DURATION=1500      # 25 minutes in seconds
-SHORT_BREAK=300         # 5 minutes
-LONG_BREAK=900          # 15 minutes
-POMODOROS_UNTIL_LONG=4  # Number of pomodoros before long break
+WORK_DURATION=1500     # 25 minutes in seconds
+SHORT_BREAK=300        # 5 minutes
+LONG_BREAK=900         # 15 minutes
+POMODOROS_UNTIL_LONG=4 # Number of pomodoros before long break
 
 # Icons
-TOMATO_ICON="🍅"
-BREAK_ICON="☕"
+TOMATO_ICON=" "
+BREAK_ICON="󰒲 "
 PAUSE_ICON="⏸"
 
 tmux_get() {
@@ -78,21 +78,21 @@ start_work() {
   tmux_set "@pomodoro_state" "work"
   tmux_set "@pomodoro_start" "$(date +%s)"
   tmux_set "@pomodoro_duration" "$WORK_DURATION"
-  tmux display-message "🍅 Pomodoro started - 25 minutes of focus!"
+  tmux display-message " Pomodoro started - 25 minutes of focus!"
 }
 
 start_short_break() {
   tmux_set "@pomodoro_state" "break"
   tmux_set "@pomodoro_start" "$(date +%s)"
   tmux_set "@pomodoro_duration" "$SHORT_BREAK"
-  tmux display-message "☕ Short break - 5 minutes to rest"
+  tmux display-message "󰒲 Short break - 5 minutes to rest"
 }
 
 start_long_break() {
   tmux_set "@pomodoro_state" "break"
   tmux_set "@pomodoro_start" "$(date +%s)"
   tmux_set "@pomodoro_duration" "$LONG_BREAK"
-  tmux display-message "☕ Long break - 15 minutes to rest"
+  tmux display-message "  Long break - 15 minutes to rest"
 }
 
 toggle() {
@@ -174,21 +174,21 @@ status() {
   local time_str=$(format_time "$remaining")
 
   case "$state" in
-    work)
-      icon="$TOMATO_ICON"
-      ;;
-    break)
-      icon="$BREAK_ICON"
-      ;;
-    paused)
-      icon="$PAUSE_ICON"
-      local paused_state=$(tmux_get "@pomodoro_paused_state" "work")
-      [ "$paused_state" = "work" ] && icon="$PAUSE_ICON$TOMATO_ICON" || icon="$PAUSE_ICON$BREAK_ICON"
-      local duration=$(get_duration)
-      local pause_duration=$(tmux_get "@pomodoro_pause_duration" "0")
-      remaining=$((duration - pause_duration))
-      time_str=$(format_time "$remaining")
-      ;;
+  work)
+    icon="$TOMATO_ICON"
+    ;;
+  break)
+    icon="$BREAK_ICON"
+    ;;
+  paused)
+    icon="$PAUSE_ICON"
+    local paused_state=$(tmux_get "@pomodoro_paused_state" "work")
+    [ "$paused_state" = "work" ] && icon="$PAUSE_ICON$TOMATO_ICON" || icon="$PAUSE_ICON$BREAK_ICON"
+    local duration=$(get_duration)
+    local pause_duration=$(tmux_get "@pomodoro_pause_duration" "0")
+    remaining=$((duration - pause_duration))
+    time_str=$(format_time "$remaining")
+    ;;
   esac
 
   # Auto-advance when timer hits 0
@@ -213,23 +213,23 @@ status() {
 }
 
 case "$1" in
-  start)
-    start_work
-    ;;
-  toggle)
-    toggle
-    ;;
-  stop)
-    stop
-    ;;
-  skip)
-    skip
-    ;;
-  status)
-    status
-    ;;
-  *)
-    echo "Usage: $0 {start|toggle|stop|skip|status}"
-    exit 1
-    ;;
+start)
+  start_work
+  ;;
+toggle)
+  toggle
+  ;;
+stop)
+  stop
+  ;;
+skip)
+  skip
+  ;;
+status)
+  status
+  ;;
+*)
+  echo "Usage: $0 {start|toggle|stop|skip|status}"
+  exit 1
+  ;;
 esac

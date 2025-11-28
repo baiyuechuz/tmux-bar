@@ -50,10 +50,10 @@ Add options to your `tmux.conf` before the plugin is loaded.
 
 ### Display Options
 
-| Option                   | Default | Description            |
-| ------------------------ | ------- | ---------------------- |
-| `@tmux_bar_show_user`    | `true`  | Show username          |
-| `@tmux_bar_show_host`    | `true`  | Show hostname          |
+| Option                    | Default | Description            |
+| ------------------------- | ------- | ---------------------- |
+| `@tmux_bar_show_user`     | `true`  | Show username          |
+| `@tmux_bar_show_host`     | `true`  | Show hostname          |
 | `@tmux_bar_show_session`  | `true`  | Show session name      |
 | `@tmux_bar_show_git`      | `true`  | Show git branch        |
 | `@tmux_bar_show_cwd`      | `false` | Show current directory |
@@ -78,7 +78,7 @@ Add options to your `tmux.conf` before the plugin is loaded.
 | `@tmux_bar_git_icon`         | ``     | Git branch icon        |
 | `@tmux_bar_cwd_icon`         | ``     | Current directory icon |
 | `@tmux_bar_prefix_icon`      | `󰊠`     | Prefix indicator icon  |
-| `@tmux_bar_pomodoro_icon`    | ``     | Pomodoro timer icon    |
+| `@tmux_bar_pomodoro_icon`    | ``      | Pomodoro timer icon    |
 | `@tmux_bar_right_arrow_icon` | `▌`     | Right separator        |
 | `@tmux_bar_left_arrow_icon`  | `▐`     | Left separator         |
 
@@ -126,11 +126,11 @@ set -g @tmux_bar_show_pomodoro true
 
 Default key bindings (can be customized):
 
-| Key         | Action                           | Option                             |
-| ----------- | -------------------------------- | ---------------------------------- |
-| `prefix + p` | Start/pause/resume timer        | `@tmux_bar_pomodoro_key_toggle`    |
-| `prefix + P` | Stop timer                      | `@tmux_bar_pomodoro_key_stop`      |
-| `prefix + o` | Skip to next session            | `@tmux_bar_pomodoro_key_skip`      |
+| Key          | Action                   | Option                          |
+| ------------ | ------------------------ | ------------------------------- |
+| `prefix + p` | Start/pause/resume timer | `@tmux_bar_pomodoro_key_toggle` |
+| `prefix + P` | Stop timer               | `@tmux_bar_pomodoro_key_stop`   |
+| `prefix + o` | Skip to next session     | `@tmux_bar_pomodoro_key_skip`   |
 
 ### Customizing Key Bindings
 
@@ -142,9 +142,9 @@ set -g @tmux_bar_pomodoro_key_skip 'o'
 
 ### Timer States
 
-- 🍅 **Work session**: 25 minutes of focused work
-- ☕ **Break**: 5 or 15 minutes rest
-- ⏸ **Paused**: Timer is paused
+- **Work session**: 25 minutes of focused work
+- **Break**: 5 or 15 minutes rest
+- **Paused**: Timer is paused
 
 The timer automatically advances to the next session when time runs out.
 
