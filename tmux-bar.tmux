@@ -71,6 +71,7 @@ date_icon="$(tmux_get '@tmux_bar_date_icon' '')"
 git_icon="$(tmux_get '@tmux_bar_git_icon' '')"
 cwd_icon="$(tmux_get '@tmux_bar_cwd_icon' '')"
 prefix_icon="$(tmux_get '@tmux_bar_prefix_icon' '󰊠')"
+pomodoro_icon="$(tmux_get '@tmux_bar_pomodoro_icon' '')"
 
 # Display options
 show_user="$(tmux_get @tmux_bar_show_user true)"
@@ -78,6 +79,7 @@ show_host="$(tmux_get @tmux_bar_show_host true)"
 show_session="$(tmux_get @tmux_bar_show_session true)"
 show_git="$(tmux_get @tmux_bar_show_git true)"
 show_cwd="$(tmux_get @tmux_bar_show_cwd false)"
+show_pomodoro="$(tmux_get @tmux_bar_show_pomodoro true)"
 time_format=$(tmux_get @tmux_bar_time_format '%T')
 date_format=$(tmux_get @tmux_bar_date_format '%F')
 refresh_interval=$(tmux_get @tmux_bar_refresh_interval 1)
@@ -113,7 +115,7 @@ fi
 
 # Git branch
 if "$show_git"; then
-  LS="$LS#[fg=$PURPLE,bg=$BG] $git_icon #(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '-') "
+  LS="$LS#[fg=$PURPLE,bg=$BG] $git_icon #(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '-')  "
 fi
 
 tmux_set status-left "$LS"
@@ -122,6 +124,11 @@ tmux_set status-left "$LS"
 tmux_set status-right-length 150
 
 RS=""
+
+# Pomodoro
+if "$show_pomodoro"; then
+  RS="$RS#[fg=$RED,bg=$BG] $pomodoro_icon #($CURRENT_DIR/pomodoro.sh status) "
+fi
 
 # Current directory
 if "$show_cwd"; then
@@ -160,3 +167,12 @@ tmux_set message-command-style "fg=$FG,bg=$BG"
 
 # Copy mode highlight
 tmux_set mode-style "bg=$BLOCK_BG,fg=$FG"
+
+# Pomodoro key bindings
+pomodoro_key_toggle=$(tmux_get @tmux_bar_pomodoro_key_toggle 'p')
+pomodoro_key_stop=$(tmux_get @tmux_bar_pomodoro_key_stop 'P')
+pomodoro_key_skip=$(tmux_get @tmux_bar_pomodoro_key_skip 'o')
+
+tmux bind-key "$pomodoro_key_toggle" run-shell "$CURRENT_DIR/pomodoro.sh toggle"
+tmux bind-key "$pomodoro_key_stop" run-shell "$CURRENT_DIR/pomodoro.sh stop"
+tmux bind-key "$pomodoro_key_skip" run-shell "$CURRENT_DIR/pomodoro.sh skip"
